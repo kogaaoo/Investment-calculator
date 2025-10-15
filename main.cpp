@@ -34,7 +34,7 @@ void waitForEnter() {
 }
 
 void printMainMenu(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
-    cout << "==== Investment Calculator Menu ====\n\n";
+    cout << "====== Investment Calculator ======\n\n";
     cout << "      Starting amount     = " << startingAmount << " zl\n";
     cout << "    Monthly contribution  = " << monthlyContribution << " zl\n";
     cout << "     Annual return rate   = " << annualReturnRate << " %\n";
@@ -53,7 +53,7 @@ void changeData(double &startingAmount, int &years, double &annualReturnRate, do
     while (running) {
         clearScreen();
         
-        cout << "==== Investment Calculator Menu ====\n\n";
+        cout << "====== Investment Calculator ======\n\n";
         cout << "(1)   Starting amount     = " << startingAmount << " zl\n";
         cout << "(2) Monthly contribution  = " << monthlyContribution << " zl\n";
         cout << "(3)  Annual return rate   = " << annualReturnRate << " %\n";
