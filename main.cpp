@@ -33,15 +33,61 @@ void waitForEnter() {
     cin.get();
 }
 
-void printMenu(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
-    cout << "==== Investment Calculator Menu ====\n";
-    cout << "1. Set starting amount [zl] (current: " << startingAmount << "zl)\n";
-    cout << "2. Set number of years (current: " << years << ")\n";
-    cout << "3. Set annual return rate [%] (current: " << annualReturnRate << ")\n";
-    cout << "4. Set monthly contribution [zl] (current: " << monthlyContribution << ")\n";
-    cout << "5. Start calculation\n";
-    cout << "6. Exit\n";
-    cout << "Choose an option: ";
+void printMainMenu(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
+    cout << "==== Investment Calculator Menu ====\n\n";
+    cout << "      Starting amount     = " << startingAmount << " zl\n";
+    cout << "    Monthly contribution  = " << monthlyContribution << " zl\n";
+    cout << "     Annual return rate   = " << annualReturnRate << " %\n";
+    cout << "      Number of years     = " << years << "\n\n";
+    cout << "            Edit data (1)\n";
+    cout << "        Start calculation (2)\n";
+    cout << "              Exit (3)\n\n";
+    cout << "         Choose an option: ";
+}
+
+void changeData(double &startingAmount, int &years, double &annualReturnRate, double &monthlyContribution) {
+     
+    int choice = 0;
+    bool running = true;
+    
+    while (running) {
+        clearScreen();
+        
+        cout << "==== Investment Calculator Menu ====\n\n";
+        cout << "(1)   Starting amount     = " << startingAmount << " zl\n";
+        cout << "(2) Monthly contribution  = " << monthlyContribution << " zl\n";
+        cout << "(3)  Annual return rate   = " << annualReturnRate << " %\n";
+        cout << "(4)   Number of years     = " << years << "\n\n";
+        cout << "(5)           Back\n\n";
+        cout << "         Choose an option: ";
+
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter starting amount: ";
+                cin >> startingAmount;
+                break;
+            case 2:
+                cout << "Enter monthly contribution: ";
+                cin >> monthlyContribution;
+                break;
+            case 3:
+                cout << "Enter annual return rate (%): ";
+                cin >> annualReturnRate;
+                break;
+            case 4:
+                cout << "Enter number of years: ";
+                cin >> years;
+                break;
+            case 5:
+                running = false;
+                break;
+            default:
+                cout << "Invalid option. Try again.\n";
+                waitForEnter();
+        }
+    }
 }
 
 void handleCalculation(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
@@ -70,30 +116,17 @@ int main() {
 
     while (running) {
         clearScreen();
-        printMenu(startingAmount, years, annualReturnRate, monthlyContribution);
+        printMainMenu(startingAmount, years, annualReturnRate, monthlyContribution);
         cin >> choice;
 
         switch (choice) {
             case 1:
-                cout << "Enter starting amount: ";
-                cin >> startingAmount;
+                changeData(startingAmount, years, annualReturnRate, monthlyContribution);
                 break;
             case 2:
-                cout << "Enter number of years: ";
-                cin >> years;
-                break;
-            case 3:
-                cout << "Enter annual return rate (%): ";
-                cin >> annualReturnRate;
-                break;
-            case 4:
-                cout << "Enter monthly contribution: ";
-                cin >> monthlyContribution;
-                break;
-            case 5:
                 handleCalculation(startingAmount, years, annualReturnRate, monthlyContribution);
                 break;
-            case 6:
+            case 3:
                 running = false;
                 cout << "Exiting program. Goodbye!\n";
                 break;
