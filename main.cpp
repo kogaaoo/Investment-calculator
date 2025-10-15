@@ -35,10 +35,10 @@ void waitForEnter() {
 
 void printMenu(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
     cout << "==== Investment Calculator Menu ====\n";
-    cout << "1. Set starting amount (current: " << startingAmount << ")\n";
+    cout << "1. Set starting amount [zl] (current: " << startingAmount << "zl)\n";
     cout << "2. Set number of years (current: " << years << ")\n";
-    cout << "3. Set annual return rate % (current: " << annualReturnRate << ")\n";
-    cout << "4. Set monthly contribution (current: " << monthlyContribution << ")\n";
+    cout << "3. Set annual return rate [%] (current: " << annualReturnRate << ")\n";
+    cout << "4. Set monthly contribution [zl] (current: " << monthlyContribution << ")\n";
     cout << "5. Start calculation\n";
     cout << "6. Exit\n";
     cout << "Choose an option: ";
