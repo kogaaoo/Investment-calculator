@@ -3,38 +3,58 @@
 #include <vector>
 using namespace std;
 
-int main()
-{
-    double starting_amount = 0;
-    int years = 0;
-    double return_rate = 0;
-    int monthly_contribution = 0;
-    double total_amount = 0;
+vector<double> calculateMonthlyTotals(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
+    const int months = years * 12;
+    const double monthlyReturnRate = annualReturnRate / 1200.0;
 
-    cout << "Enter the starting amount: ";
-    cin >> starting_amount;
-    cout << "Enter the number of years: ";
-    cin >> years;
-    cout << "Enter the annual return rate (in %): ";
-    cin >> return_rate;
-    cout << "Enter the additional monthly contribution: ";
-    cin >> monthly_contribution;
+    vector<double> monthlyTotals;
+    monthlyTotals.reserve(months);  // reserve space for efficiency
 
-    int months = years * 12;
-    total_amount = starting_amount;
-    double monthly_return = return_rate/1200;
-    cout << monthly_return << endl << endl;
+    double totalAmount = startingAmount;
 
     for (int i = 0; i < months; ++i) {
-        cout << total_amount << endl;
-        cout << total_amount * monthly_return;
-        total_amount += total_amount * monthly_return;
-        cout << total_amount << endl;
-        total_amount += monthly_contribution;
-        cout << total_amount << endl << endl;
+        totalAmount += totalAmount * monthlyReturnRate;  // compound growth
+        totalAmount += monthlyContribution;              // monthly contribution
+        monthlyTotals.push_back(totalAmount);            // store this month's total
     }
 
-    cout << "Total amount = " << setprecision(2) << fixed << total_amount << "zl";
+    return monthlyTotals;
+}
+
+
+void getUserInput(double &startingAmount, int &years, double &annualReturnRate, double &monthlyContribution) {
+    cout << "Enter the starting amount: ";
+    cin >> startingAmount;
+
+    cout << "Enter the number of years: ";
+    cin >> years;
+
+    cout << "Enter the annual return rate (in %): ";
+    cin >> annualReturnRate;
+
+    cout << "Enter the additional monthly contribution: ";
+    cin >> monthlyContribution;
+}
+
+int main() {
+    double startingAmount = 0.0;
+    int years = 0;
+    double annualReturnRate = 0.0;
+    double monthlyContribution = 0.0;
+
+    getUserInput(startingAmount, years, annualReturnRate, monthlyContribution);
+
+    vector<double> monthlyTotals = calculateMonthlyTotals(startingAmount, years, annualReturnRate, monthlyContribution);
+
+    cout << fixed << setprecision(2);
+    cout << "\nMonth-by-month totals:\n";
+    for (size_t i = 0; i < monthlyTotals.size(); ++i) {
+        cout << "Month " << (i + 1) << ": " << monthlyTotals[i] << " zl\n";
+    }
+
+    cout << "\nFinal total after " << years << " years = " 
+         << monthlyTotals.back() << " zl" << endl;
 
     return 0;
+
 }
