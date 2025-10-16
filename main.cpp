@@ -115,6 +115,7 @@ int main() {
                 break;
             case 2:
                 calculateMonthlyTotals(startingAmount, years, annualReturnRate, monthlyContribution, monthlyTotals);
+                startingAmount = monthlyTotals[monthlyTotals.size()-1];
                 cout << "Calculation completed\n";
                 waitForEnter();
                 break;
