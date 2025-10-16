@@ -4,27 +4,18 @@
 #include <limits>   // for numeric_limits
 using namespace std;
 
-vector<double> calculateMonthlyTotals(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
+void calculateMonthlyTotals(double startingAmount, int years, double annualReturnRate, double monthlyContribution, vector<double> &monthlyTotals) {
     const int months = years * 12;
     const double monthlyReturnRate = annualReturnRate / 1200.0;
-
-    vector<double> monthlyTotals;
     monthlyTotals.reserve(months);
 
     double totalAmount = startingAmount;
 
     for (int i = 0; i < months; ++i) {
-        totalAmount += totalAmount * monthlyReturnRate;  // compound growth
-        totalAmount += monthlyContribution;              // monthly contribution
+        totalAmount += totalAmount * monthlyReturnRate;
+        totalAmount += monthlyContribution;
         monthlyTotals.push_back(totalAmount);
     }
-
-    return monthlyTotals;
-}
-
-void clearScreen() {
-    // Cross-platform clear screen
-    cout << "\033[2J\033[1;1H"; 
 }
 
 void waitForEnter() {
@@ -34,6 +25,8 @@ void waitForEnter() {
 }
 
 void printMainMenu(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
+    cout << "\033[2J\033[1;1H"; //clear screen
+    
     cout << "====== Investment Calculator ======\n\n";
     cout << "      Starting amount     = " << startingAmount << " zl\n";
     cout << "    Monthly contribution  = " << monthlyContribution << " zl\n";
@@ -41,7 +34,8 @@ void printMainMenu(double startingAmount, int years, double annualReturnRate, do
     cout << "      Number of years     = " << years << "\n\n";
     cout << "            Edit data (1)\n";
     cout << "        Start calculation (2)\n";
-    cout << "              Exit (3)\n\n";
+    cout << "          View outcome (3)\n";
+    cout << "              Exit (4)\n\n";
     cout << "         Choose an option: ";
 }
 
@@ -51,7 +45,7 @@ void changeData(double &startingAmount, int &years, double &annualReturnRate, do
     bool running = true;
     
     while (running) {
-        clearScreen();
+        cout << "\033[2J\033[1;1H";  //clear screen
         
         cout << "====== Investment Calculator ======\n\n";
         cout << "(1)   Starting amount     = " << startingAmount << " zl\n";
@@ -90,19 +84,14 @@ void changeData(double &startingAmount, int &years, double &annualReturnRate, do
     }
 }
 
-void handleCalculation(double startingAmount, int years, double annualReturnRate, double monthlyContribution) {
-    vector<double> monthlyTotals = calculateMonthlyTotals(startingAmount, years, annualReturnRate, monthlyContribution);
-
-    cout << fixed << setprecision(2);
+void printOutcome(vector<double> monthlyTotals) {
     cout << "\nMonth-by-month totals:\n";
     for (size_t i = 0; i < monthlyTotals.size(); ++i) {
         cout << "Month " << (i + 1) << ": " << monthlyTotals[i] << " zl\n";
     }
 
-    cout << "\nFinal total after " << years << " years = "
+    cout << "\nFinal total after " << monthlyTotals.size()/12 << " years = "
          << monthlyTotals.back() << " zl\n";
-
-    waitForEnter();
 }
 
 int main() {
@@ -111,11 +100,12 @@ int main() {
     double annualReturnRate = 0.0;
     double monthlyContribution = 0.0;
 
+    vector<double> monthlyTotals;
+
     int choice = 0;
     bool running = true;
 
     while (running) {
-        clearScreen();
         printMainMenu(startingAmount, years, annualReturnRate, monthlyContribution);
         cin >> choice;
 
@@ -124,11 +114,15 @@ int main() {
                 changeData(startingAmount, years, annualReturnRate, monthlyContribution);
                 break;
             case 2:
-                handleCalculation(startingAmount, years, annualReturnRate, monthlyContribution);
+                calculateMonthlyTotals(startingAmount, years, annualReturnRate, monthlyContribution, monthlyTotals);
+                cout << "Calculation completed\n";
+                waitForEnter();
                 break;
             case 3:
+                printOutcome(monthlyTotals);
+                waitForEnter();
+            case 4:
                 running = false;
-                cout << "Exiting program. Goodbye!\n";
                 break;
             default:
                 cout << "Invalid option. Try again.\n";
